@@ -15,7 +15,7 @@ Python-oracledb обладает богатым набором функций, �
 
 Модуль python-oracledb ранее назывался cx_Oracle. cx_Oracle устарел и не рекомендуется для использования в новых проектах. Информация об обновлении см. в разделе [Обновление с cx_Oracle 8.3 до python-oracledb](https://python-oracledb.readthedocs.io/en/latest/user_guide/appendix_c.html#upgrading83) .
 
-### [1.1. Начало работы][odb_11]
+### 1.1. <a id="odb_1_1">Начало работы</a>
 !_! See Quick Start python-oracledb Installation.
 
 Примеры для запуска находятся в [каталоге примеров на GitHub](https://github.com/oracle/python-oracledb/tree/main/samples). Также доступен обучающий [курс «Python и Oracle Database: The New Wave of Scripting»](https://github.com/oracle/python-oracledb/tree/main/samples).
