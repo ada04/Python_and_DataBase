@@ -15,25 +15,25 @@ Python-oracledb обладает богатым набором функций, �
 
 Модуль python-oracledb ранее назывался cx_Oracle. cx_Oracle устарел и не рекомендуется для использования в новых проектах. Информация об обновлении см. в разделе [Обновление с cx_Oracle 8.3 до python-oracledb](https://python-oracledb.readthedocs.io/en/latest/user_guide/appendix_c.html#upgrading83) .
 
-### 1.1. Getting Started
+### 1.1. Начало работы
 See Quick Start python-oracledb Installation.
 
 Runnable examples are in the GitHub samples directory. A tutorial Python and Oracle Database Tutorial: The New Wave of Scripting is also available.
 
-### 1.2. Architecture
+### 1.2. Архитектура
 Python-oracledb is a ‘Thin’ driver with an optional ‘Thick’ mode enabled by an application setting.
 
-#### 1.2.1. python-oracledb Thin Mode Architecture
+#### 1.2.1. Режим тонкого клиента python-oracledb
 By default, python-oracledb allows connecting directly to Oracle Database 12.1 or later. This Thin mode does not need Oracle Client libraries.
 
-architecture of the python-oracledb driver in Thin mode
+(https://python-oracledb.readthedocs.io/en/latest/_images/python-oracledb-thin-arch.png)
 Fig. 1.1 Architecture of the python-oracledb driver in Thin mode
 
 The figure shows the architecture of python-oracledb. Users interact with a Python application, for example by making web requests. The application program makes calls to python-oracledb functions. The connection from python-oracledb Thin mode to Oracle Database is established directly by python-oracledb over the Oracle Net protocol. The database can be on the same machine as Python, or it can be remote.
 
 The behavior of Oracle Net can optionally be configured with application settings, or by using a tnsnames.ora file, see Optional Oracle Net Configuration Files.
 
-#### 1.2.2. python-oracledb Thick Mode Architecture
+#### 1.2.2. Режим толстого клиента python-oracledb
 Python-oracledb is said to be in ‘Thick’ mode when it links with Oracle Client libraries. An application script runtime option enables this mode by loading the libraries, see Enabling python-oracledb Thick mode. This gives you some additional functionality. Depending on the version of the Oracle Client libraries, this mode of python-oracledb can connect to Oracle Database 9.2 or later.
 
 architecture of the python-oracledb driver in Thick mode
