@@ -1,18 +1,19 @@
-## 1. Introduction to the Python Driver for Oracle Database
+# Модуль для подключения к Oracle Database из Python
+## 1. Введение
    
-The python-oracledb driver is an open source Python module that enables access to Oracle Database with no extra libraries needed. The module is built with Cython for safety and speed. It is lightweight and high-performance. It is stable, well tested, and has comprehensive documentation. The module is maintained by Oracle.
+Python-oracledb -  это модуль Python с [открытым исходным кодом](https://python-oracledb.readthedocs.io/en/latest/license.html#license), обеспечивающий доступ к базе данных Oracle без необходимости использования дополнительных библиотек. Модуль разработан на Cython для обеспечения безопасности и скорости. Он лёгкий и высокопроизводительный. Он стабилен, хорошо протестирован и имеет подробную документацию. 
 
-The module conforms to the Python Database API v2.0 Specification with a considerable number of additions and a couple of minor exclusions. It is used by many Python frameworks, SQL generators, ORMs, and libraries.
+Модуль соответствует [спецификации Python Database API v2.0](https://www.python.org/dev/peps/pep-0249/) со значительным количеством дополнений и несколькими незначительными исключениями. Он используется многими фреймворками Python, SQL-генераторами, ORM-объектами и библиотеками.
 
-Python-oracledb has a rich feature set which is easy to use. It gives you control over SQL and PL/SQL statement execution; for working with data frames; for fast data ingestion; for calling NoSQL-style document APIs; for message queueing; for receiving database notifications; and for starting and stopping the database. It also has high availability and security features. Synchronous and concurrent coding styles are supported. Database operations can optionally be pipelined.
+Python-oracledb обладает богатым набором функций, которые просты в использовании. Он позволяет управлять выполнением операторов SQL и PL/SQL, работать с фреймами данных, быстро получать данные, вызывать document API в стиле NoSQL, организовывать очереди сообщений, получать уведомления базы данных, а также запускать и останавливать базу данных. Он также обладает функциями обеспечения высокой доступности и безопасности. Поддерживаются синхронный и параллельный стили кодирования. Операции с базой данных могут быть конвейерными.
 
-The module is available from standard package repositories including PyPI, conda-forge, and yum.oracle.com. The source code is hosted at github.com/oracle/python-oracledb.
+Модуль доступен в стандартных репозиториях пакетов, включая [PyPI](https://pypi.org/project/oracledb/), [conda-forge](https://anaconda.org/conda-forge/oracledb), and [yum.oracle.com](https://yum.oracle.com/oracle-linux-python.html). Исходный код размещён на [github.com/oracle/python-oracledb](https://github.com/oracle/python-oracledb).
 
-This module is currently tested with Python 3.9, 3.10, 3.11, 3.12, 3.13, and 3.14 against Oracle Database version 23, 21, 19, 18, 12, and 11.2. Previous versions of python-oracledb supported older Python versions.
+В настоящее время этот модуль тестируется с Python 3.9, 3.10, 3.11, 3.12, 3.13 и 3.14 и Oracle Database версий 23, 21, 19, 18, 12 и 11.2. Предыдущие версии python-oracledb поддерживали более старые версии Python.
 
-Changes in python-oracledb releases can be found in the release notes.
+!_! Changes in python-oracledb releases can be found in the release notes.
 
-The python-oracledb driver is the renamed, successor to cx_Oracle. The cx_Oracle driver is obsolete and should not be used for new development. For upgrade information, see Upgrading from cx_Oracle 8.3 to python-oracledb.
+Модуль python-oracledb ранее назывался cx_Oracle. cx_Oracle устарел и не рекомендуется для использования в новых проектах. Информация об обновлении см. в разделе [Обновление с cx_Oracle 8.3 до python-oracledb](https://python-oracledb.readthedocs.io/en/latest/user_guide/appendix_c.html#upgrading83) .
 
 ### 1.1. Getting Started
 See Quick Start python-oracledb Installation.
