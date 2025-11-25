@@ -60,4 +60,5 @@ Python-oracledb считается работающим в режиме «тол
  * Управление соединениями, включая пул соединений
  * Функции высокой доступности Oracle Database
  * Полное использование инфраструктуры Oracle Network Service, включая шифрование сетевого трафика
+
 Дополнительные сведения см. [в Приложении A: Функции базы данных Oracle, поддерживаемые python-oracledb](https://python-oracledb.readthedocs.io/en/latest/user_guide/appendix_a.html#featuresummary).
