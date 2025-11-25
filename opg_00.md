@@ -1,15 +1,14 @@
 # Документация python-oracledb [Eng original](https://python-oracledb.readthedocs.io/en/latest/index.html#welcome-to-python-oracledb-s-documentation)
 
 ## Руководство пользователя
-* 1 [Введение в драйвер Python для базы данных Oracle](opg_01.md)
+*1. [Введение в драйвер Python для базы данных Oracle](opg_01.md)
     * 1.1. Начало работы
     * 1.2 Архитектура
         * 1.2.1. Архитектура тонкого режима python-oracledb
         * 1.2.2. Архитектура толстого режима python-oracledb
-
-          
+        
 1.3. Основные возможности python-oracledb
-2. Установка python-oracledb
+2 Установка python-oracledb
 2.1. Быстрый старт установки python-oracledb
 2.2 Поддерживаемые версии базы данных Oracle
 2.3 Требования к установке
