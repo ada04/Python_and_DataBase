@@ -16,58 +16,48 @@ Python-oracledb обладает богатым набором функций, �
 Модуль python-oracledb ранее назывался cx_Oracle. cx_Oracle устарел и не рекомендуется для использования в новых проектах. Информация об обновлении см. в разделе [Обновление с cx_Oracle 8.3 до python-oracledb](https://python-oracledb.readthedocs.io/en/latest/user_guide/appendix_c.html#upgrading83) .
 
 ### 1.1. Начало работы
-See Quick Start python-oracledb Installation.
+!_! See Quick Start python-oracledb Installation.
 
-Runnable examples are in the GitHub samples directory. A tutorial Python and Oracle Database Tutorial: The New Wave of Scripting is also available.
+Примеры для запуска находятся в [каталоге примеров на GitHub](https://github.com/oracle/python-oracledb/tree/main/samples). Также доступен обучающий [курс «Python и Oracle Database: The New Wave of Scripting»](https://github.com/oracle/python-oracledb/tree/main/samples).
 
 ### 1.2. Архитектура
-Python-oracledb is a ‘Thin’ driver with an optional ‘Thick’ mode enabled by an application setting.
+Python-oracledb по умолчанию подключается к СУБД Oracle в режиме "тонкого" клиента, но можно в настройках изменить на режим "толстого" клиента.
 
-#### 1.2.1. Режим тонкого клиента python-oracledb
-By default, python-oracledb allows connecting directly to Oracle Database 12.1 or later. This Thin mode does not need Oracle Client libraries.
+#### 1.2.1. Подключение в режиме "тонкого" клиента python-oracledb
+По умолчанию python-oracledb позволяет подключаться напрямую к Oracle Database 12.1 и более поздним версиям в режиме "тонкого" не требующего установки клиентских библиотек Oracle.
 
 ![](https://python-oracledb.readthedocs.io/en/latest/_images/python-oracledb-thin-arch.png)
-Fig. 1.1 Architecture of the python-oracledb driver in Thin mode
+Рсиунок 1.1 Архитектура работы python-oracledb в режиме "тонкого" клиента.
 
-The figure shows the architecture of python-oracledb. Users interact with a Python application, for example by making web requests. The application program makes calls to python-oracledb functions. The connection from python-oracledb Thin mode to Oracle Database is established directly by python-oracledb over the Oracle Net protocol. The database can be on the same machine as Python, or it can be remote.
+На рисунке показана архитектура работы python-oracledb в режиме "тонкого" клиента. Пользователи взаимодействуют с приложением Python, например, отправляя веб-запросы. Прикладная программа вызывает функции python-oracledb. Подключение python-oracledb в режиме "тонкого" клиента к Oracle Database осуществляется непосредственно python-oracledb по протоколу Oracle Net. База данных может располагаться на той же машине, что и Python, или быть удалённой.
 
-The behavior of Oracle Net can optionally be configured with application settings, or by using a tnsnames.ora file, see Optional Oracle Net Configuration Files.
+Поведение Oracle Net можно дополнительно настроить с помощью параметров приложения или с помощью файла tnsnames.ora, см. [Optional Oracle Net Configuration Files](https://python-oracledb.readthedocs.io/en/latest/user_guide/initialization.html#optnetfiles).
 
-#### 1.2.2. Режим толстого клиента python-oracledb
-Python-oracledb is said to be in ‘Thick’ mode when it links with Oracle Client libraries. An application script runtime option enables this mode by loading the libraries, see Enabling python-oracledb Thick mode. This gives you some additional functionality. Depending on the version of the Oracle Client libraries, this mode of python-oracledb can connect to Oracle Database 9.2 or later.
+#### 1.2.2. Подключение в режиме "толстого" клиента python-oracledb
+Python-oracledb считается работающим в режиме «толстого» (Thick) клиента, когда при подключении к Oracle использует клиентские библиотеки (необходим установленный клиент Oracle). Этот режим включается во время выполнения скрипта приложения, загружая библиотеки (см. раздел [«Включение толстого режима python-oracledb»](https://python-oracledb.readthedocs.io/en/latest/user_guide/initialization.html#enablingthick)). Это предоставляет ряд [дополнительных функций](https://python-oracledb.readthedocs.io/en/latest/user_guide/appendix_a.html#featuresummary). В зависимости от версии клиентских библиотек Oracle, этот режим python-oracledb может подключаться к Oracle Database 9.2 или более поздней версии.
 
-architecture of the python-oracledb driver in Thick mode
-Fig. 1.2 Architecture of the python-oracledb driver in Thick mode
+![architecture of the python-oracledb driver in Thick mode](https://python-oracledb.readthedocs.io/en/latest/_images/python-oracledb-thick-arch.png)
+Рисунок 1.2 Архитектура подключения python-oracledb в режиме "толстого" клиента
 
-The figure shows the architecture of the python-oracledb Thick mode. Users interact with a Python application, for example by making web requests. The application program makes calls to python-oracledb functions. Internally, python-oracledb dynamically loads Oracle Client libraries. Connections from python-oracledb Thick mode to Oracle Database are established by the Oracle Client libraries over the Oracle Net protocol. The database can be on the same machine as Python, or it can be remote.
+На рисунке показана архитектура python-oracledb в режиме Thick mode. Пользователи взаимодействуют с приложением Python, например, отправляя веб-запросы. Прикладная программа вызывает функции python-oracledb. Внутренне python-oracledb динамически загружает клиентские библиотеки Oracle. Подключения из режима Thick в python-oracledb к базе данных Oracle устанавливаются клиентскими библиотеками Oracle по протоколу Oracle Net. База данных может располагаться на том же компьютере, что и Python, или быть удалённой.
 
-To use python-oracledb Thick mode, the Oracle Client libraries must be installed separately, see Installing python-oracledb. The libraries can be from an installation of Oracle Instant Client, from a full Oracle Client installation (such as installed by Oracle’s GUI installer), or even from an Oracle Database installation (if Python is running on the same machine as the database). Oracle’s standard client-server version interoperability allows connection to both older and newer databases from different Oracle Client library versions.
+Для использования режима Thick python-oracledb необходимо отдельно установить клиентские библиотеки Oracle (см. раздел [Установка python-oracledb](https://python-oracledb.readthedocs.io/en/latest/user_guide/installation.html#installation)). Библиотеки могут быть из установки [Oracle Instant Client](https://www.oracle.com/database/technologies/instant-client.html), из полной установки Oracle Client (например, установленной с помощью графического установщика Oracle) или даже из установки Oracle Database (если Python работает на том же компьютере, что и база данных). Стандартная совместимость клиент-серверных версий Oracle позволяет подключаться как к старым, так и к новым базам данных из разных версий клиентской библиотеки Oracle.
 
-Some behaviors of the Oracle Client libraries can optionally be configured with an oraaccess.xml file, for example to enable auto-tuning of a statement cache. See Optional Oracle Client Configuration File.
+Некоторые функции клиентских библиотек Oracle можно настроить с помощью файла oraaccess.xml, например, для включения автоматической настройки кэша операторов. См. раздел [Дополнительный файл конфигурации клиента Oracle](https://python-oracledb.readthedocs.io/en/latest/user_guide/initialization.html#optclientfiles).
 
-The behavior of Oracle Net can optionally be configured with files such as tnsnames.ora and sqlnet.ora, for example to enable network encryption. See Optional Oracle Net Configuration Files.
+Поведение Oracle Net можно дополнительно настроить с помощью таких файлов, как tnsnames.ora и sqlnet.ora, например, для включения [сетевого шифрования](https://python-oracledb.readthedocs.io/en/latest/user_guide/connection_handling.html#netencrypt). См. [раздел Дополнительные файлы конфигурации Oracle Net](https://python-oracledb.readthedocs.io/en/latest/user_guide/initialization.html#optnetfiles).
 
-Oracle environment variables that are set before python-oracledb first creates a database connection may affect python-oracledb Thick mode behavior. See Oracle Environment Variables for python-oracledb.
+Переменные среды Oracle, заданные до того, как python-oracledb впервые создаст соединение с базой данных, могут повлиять на поведение python-oracledb в режиме Thick. См. [раздел Переменные среды Oracle для python-oracledb](https://python-oracledb.readthedocs.io/en/latest/user_guide/initialization.html#envset).
 
 ### 1.3. Feature Highlights of python-oracledb
-The python-oracledb feature highlights are:
-
-Easy installation from PyPI and other repositories
-
-Support for multiple Oracle Database versions
-
-Supports the Python Database API v2.0 Specification with a considerable number of additions and a couple of exclusions
-
-Works with common frameworks and ORMs
-
-Execution of SQL and PL/SQL statements
-
-Extensive Oracle data type support, including JSON, VECTOR, large objects (CLOB and BLOB) and binding of SQL objects
-
-Connection management, including connection pooling
-
-Oracle Database High Availability features
-
-Full use of Oracle Network Service infrastructure, including encrypted network traffic
-
-See Appendix A: Oracle Database Features Supported by python-oracledb for more information.
+Основные возможности python-oracledb:
+ * Простая установка из PyPI и других репозиториев
+ * Поддержка нескольких версий Oracle Database
+ * Поддерживает [спецификацию Python Database API v2.0](https://www.python.org/dev/peps/pep-0249/) со значительным количеством дополнений и несколькими исключениями.
+ * Работает с распространенными фреймворками и ORM
+ * Выполнение операторов SQL и PL/SQL
+ * Расширенная поддержка типов данных Oracle, включая JSON, VECTOR, большие объекты (CLOB и BLOB) и привязку объектов SQL
+ * Управление соединениями, включая пул соединений
+ * Функции высокой доступности Oracle Database
+ * Полное использование инфраструктуры Oracle Network Service, включая шифрование сетевого трафика
+Дополнительные сведения см. [в Приложении A: Функции базы данных Oracle, поддерживаемые python-oracledb](https://python-oracledb.readthedocs.io/en/latest/user_guide/appendix_a.html#featuresummary).
