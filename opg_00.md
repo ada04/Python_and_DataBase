@@ -6,7 +6,6 @@
     * 1.2. Архитектура
         * 1.2.1. Архитектура тонкого режима python-oracledb
         * 1.2.2. Архитектура толстого режима python-oracledb
-        
     * 1.3. Основные возможности python-oracledb
 * 2\. Установка python-oracledb
     * 2.1. Быстрый старт установки python-oracledb
