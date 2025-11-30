@@ -43,7 +43,7 @@ user_name = "scott"
 conn_string = "localhost/orclpdb"
 # cs = "localhost/freepdb1"   # for Oracle AI Database Free users
 # cs = "localhost/orclpdb1"   # some databases may have this service
-pw = getpass.getpass(f"Enter password for {user_namr}@{connect_string}: ")
+pw = getpass.getpass(f"Enter password for {user_name}@{connect_string}: ")
 
 with oracledb.connect(user=user_name, password=pw, dsn=connect_string) as connection:
     with connection.cursor() as cursor:
@@ -60,16 +60,23 @@ with oracledb.connect(user=user_name, password=pw, dsn=connect_string) as connec
 
 5. Запустите программу:
 
+```
 python test.py
+```
+
 При появлении запроса введите пароль базы данных, и будет отображена запрашиваемая дата, например:
 
+```
 Enter password for cj@localhost/orclpdb: xxxxxxxxxx
 (datetime.datetime(2024, 4, 30, 8, 24, 4),)
-Если у вас возникли проблемы с установкой, обратитесь к подробным инструкциям ниже или ознакомьтесь с разделом Устранение ошибок .
+```
 
-Дополнительную информацию о python-oracledb можно найти в документации и примерах python-oracledb .
+Если у вас возникли проблемы с установкой, обратитесь к подробным инструкциям ниже или ознакомьтесь с разделом [Устранение ошибок](odb_28.md) .
 
-2.2 Поддерживаемые версии базы данных Oracle
+Дополнительную информацию о python-oracledb можно найти в [документации](https://python-oracledb.readthedocs.io/en/latest/index.html) и [примерах](https://github.com/oracle/python-oracledb/tree/main/samples).
+
+## 2.2 Поддерживаемые версии базы данных Oracle
+
 При использовании python-oracledb в режиме Thin по умолчанию он подключается напрямую к базе данных Oracle и не требует клиентских библиотек Oracle. В этом режиме можно подключаться к базе данных Oracle версии 12.1 и выше.
 
 Для подключения к более старым версиям Oracle Database необходимо установить клиентские библиотеки Oracle и включить режим Thick в python-oracledb .
