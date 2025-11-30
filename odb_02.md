@@ -11,19 +11,19 @@
 ### 2.1. Быстрая установка python-oracledb
 Python-oracledb обычно устанавливается из репозитория пакетов Python [PyPI](https://pypi.org/project/oracledb/) с помощью [pip](https://pip.pypa.io/en/latest/installation/) или [uv](https://pypi.org/project/uv/).
 
-1 Установите Python 3, если он еще не доступен.
+1. Установите Python 3, если он еще не доступен.
 
 Используйте любую версию от Python 3.9 до 3.14.
 
 Предыдущие версии python-oracledb поддерживали старые версии Python.
 
-2 Установите python-oracledb, например:
+2. Установите python-oracledb, например:
 
 ```bash
 python -m pip install oracledb --upgrade --user
 ```
 
-Обратите внимание, что имя модуля — просто `oracledb`.
+Обратите внимание, что имя модуля — `oracledb`.
 
 Если вы используете прокси-сервер, воспользуйтесь опцией `--proxy`. Например:
 
@@ -33,32 +33,32 @@ python -m pip install oracledb --upgrade --user --proxy=http://proxy.example.com
 
 По умолчанию python-oracledb подключается напрямую к Oracle Database. Это позволяет использовать его сразу, без необходимости установки дополнительных клиентских библиотек Oracle.
 
-Создайте файл, `test.py` например:
+3. Создайте файл, `test.py` например:
 
 ```python
 import oracledb
 import getpass
 
-un = "scott"
-cs = "localhost/orclpdb"
+user_name = "scott"
+conn_string = "localhost/orclpdb"
 # cs = "localhost/freepdb1"   # for Oracle AI Database Free users
 # cs = "localhost/orclpdb1"   # some databases may have this service
-pw = getpass.getpass(f"Enter password for {un}@{cs}: ")
+pw = getpass.getpass(f"Enter password for {user_namr}@{connect_string}: ")
 
-with oracledb.connect(user=un, password=pw, dsn=cs) as connection:
+with oracledb.connect(user=user_name, password=pw, dsn=connect_string) as connection:
     with connection.cursor() as cursor:
         sql = "select sysdate from dual"
         for r in cursor.execute(sql):
             print(r)
 ```
 
-Отредактируйте test.py и задайте переменные unи csдля своего имени пользователя базы данных и строки подключения к базе данных соответственно.
+4. Отредактируйте `test.py` и задайте переменные `user_name` и `connect_string` для своего имени пользователя базы данных и строки подключения к базе данных соответственно.
 
-Для простого подключения к базе данных требуются имя пользователя и пароль Oracle Database, а также строка подключения к базе данных . Для python-oracledb общепринятым форматом строки подключения является hostname:port/servicename, включающая имя хоста, на котором запущена база данных, имя службы Oracle Database экземпляра базы данных и порт, используемый базой данных. Если используется порт по умолчанию 1521, этот компонент строки подключения часто опускается.
+Для простого подключения к базе данных требуются имя пользователя и пароль Oracle Database, а также строка подключения к базе данных. Для python-oracledb общепринятым форматом строки подключения является `hostname:port/servicename`, включающая имя хоста, на котором запущена база данных, имя службы Oracle Database экземпляра базы данных и порт, используемый базой данных. Если используется порт по умолчанию 1521, этот компонент строки подключения часто опускается.
 
-База данных может быть локальной или облачной . Драйвер python-oracledb не включает базу данных.
+База данных может быть локальной, удалённой или облачной.
 
-Запустите программу:
+5. Запустите программу:
 
 python test.py
 При появлении запроса введите пароль базы данных, и будет отображена запрашиваемая дата, например:
