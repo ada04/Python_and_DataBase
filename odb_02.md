@@ -616,3 +616,7 @@ python -m pip install oracledb[azure_auth]
 При необходимости ознакомьтесь с инструкциями по установке Microsoft MSAL .
 
 Дополнительные сведения об использовании плагина в python-oracledb см . в статье Azure Cloud Native Authentication с подключаемым модулем azure_tokens .
+
+---
+
+< [Установка python-oracledb](odb_02.md)  |  [Установка python-oracledb](odb_02.md) >
