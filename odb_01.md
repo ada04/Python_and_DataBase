@@ -65,6 +65,6 @@ Python-oracledb считается работающим в режиме «тол
 
 ---
 
-[Оглавление](odb_00.md)  <|>  [Установка python-oracledb](odb_02.md)
+< [Оглавление](odb_00.md)  |  [Установка python-oracledb](odb_02.md) >
 
 
