@@ -188,6 +188,7 @@ print(columns)
 В следующей таблице представлен список всех типов данных, которые python-oracledb умеет извлекать. В среднем столбце указан тип, возвращаемый в метаданных запроса. В последнем столбце указан тип объекта Python, возвращаемый по умолчанию. Типы Python можно изменить с помощью обработчиков выходных типов.
 
 |Тип базы данных Oracle|Тип базы данных oracledb|Тип Python по умолчанию|
+|----------------------|------------------------|-----------------------|
 |BFILE|oracledb.DB_TYPE_BFILE|oracledb.LOB|
 |BINARY_DOUBLE|oracledb.DB_TYPE_BINARY_DOUBLE|float|
 |BINARY_FLOAT|oracledb.DB_TYPE_BINARY_FLOAT|float|
