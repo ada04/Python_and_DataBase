@@ -99,7 +99,7 @@ for row in rows:
 
 Методы выборки возвращают данные в виде кортежей. Чтобы получить результаты в виде словарей, см. раздел [Изменение результатов запроса с помощью Rowfactories](6.1.5.3).
 
-- Данные также можно извлекать в формате фрейма данных, см. раздел [Работа с фреймами данных](odb_16.md). #Редакт
+- Данные также можно извлекать в формате фрейма данных, см. раздел [Работа с фреймами данных](odb_16.md). #!
 
 ### 6.1.2 Закрытие курсоров
 
@@ -107,231 +107,125 @@ for row in rows:
 
 Курсоры можно закрыть различными способами:
 
-Курсор будет автоматически закрыт, когда ссылающаяся на него переменная выйдет из области видимости (и дальнейшие ссылки не сохранятся). withБлок менеджера контекста — удобный и предпочтительный способ обеспечить это. Например:
+- Курсор будет автоматически закрыт, когда ссылающаяся на него переменная выйдет из области видимости (и дальнейшие ссылки не сохранятся). Блок `with` — удобный и предпочтительный способ обеспечить это. Например:
 
+```
 with connection.cursor() as cursor:
     for row in cursor.execute("select * from MyTable"):
         print(row)
+```
+
 Этот код гарантирует, что после завершения блока курсор будет закрыт, и ресурсы базы данных могут быть освобождены. Кроме того, любая попытка использовать переменную cursorвне блока завершится неудачей.
 
-Курсоры можно явно закрыть, вызвав Cursor.close():
+- Курсоры можно явно закрыть, вызвав `Cursor.close()`:
 
+```
 cursor = connection.cursor()
 
 ...
 
 cursor.close()
-6.1.3. Запрос метаданных столбца
-После выполнения запроса метаданные столбцов, такие как имена столбцов и типы данных, можно получить с помощью Cursor.description:
+```
 
+# 6.1.3. Запрос метаданных
+
+После выполнения запроса метаданные, такие как имена столбцов и типы данных, можно получить с помощью `Cursor.description`:
+
+```
 with connection.cursor() as cursor:
     cursor.execute("select * from MyTable")
     for column in cursor.description:
         print(column)
+```
+
 Это может привести к появлению таких метаданных:
 
+```
 ('ID', <class 'oracledb.DB_TYPE_NUMBER'>, 39, None, 38, 0, 0)
 ('NAME', <class 'oracledb.DB_TYPE_VARCHAR'>, 20, 20, None, None, 1)
+```
+
 Чтобы извлечь имена столбцов из запроса, можно использовать такой код:
 
+```
 with connection.cursor() as cursor:
     cursor.execute("select * from locations")
     columns = [col.name for col in cursor.description]
     print(columns)
     for r in cursor:
         print(r)
+```
+
 Это напечатает:
 
+```
 ['LOCATION_ID', 'STREET_ADDRESS', 'POSTAL_CODE', 'CITY', 'STATE_PROVINCE', 'COUNTRY_ID']
 (1000, '1297 Via Cola di Rie', '00989', 'Roma', None, 'IT')
 (1100, '93091 Calle della Testa', '10934', 'Venice', None, 'IT')
 . . .
-Изменение названий столбцов на строчные буквы
+```
+
+#### Изменение названий столбцов на строчные буквы
 
 Чтобы изменить названия всех столбцов на строчные, можно сделать следующее:
 
+```
 cursor.execute("select * from locations where location_id = 1000")
 
 columns = [col.name.lower() for col in cursor.description]
 print(columns)
+```
+
 Вывод такой:
 
+```
 ['location_id', 'street_address', 'postal_code', 'city', 'state_province',
 'country_id']
-6.1.4. Выборка типов данных
-В следующей таблице представлен список всех типов данных, которые python-oracledb умеет извлекать. В среднем столбце указан тип, возвращаемый в метаданных запроса . В последнем столбце указан тип объекта Python, возвращаемый по умолчанию. Типы Python можно изменить с помощью обработчиков выходных типов .
-
-Тип базы данных Oracle
-
-Тип базы данных oracledb
-
-Тип Python по умолчанию
-
-BFILE
-
-oracledb.DB_TYPE_BFILE
-
-oracledb.LOB
-
-BINARY_DOUBLE
-
-oracledb.DB_TYPE_BINARY_DOUBLE
-
-плавать
-
-BINARY_FLOAT
-
-oracledb.DB_TYPE_BINARY_FLOAT
-
-плавать
-
-БЛОБ
-
-oracledb.DB_TYPE_BLOB
-
-oracledb.LOB
-
-СИМВОЛ
-
-oracledb.DB_TYPE_CHAR
-
-ул.
-
-КЛОБ
-
-oracledb.DB_TYPE_CLOB
-
-oracledb.LOB
-
-КУРСОР
-
-oracledb.DB_TYPE_CURSOR
-
-oracledb.Cursor
-
-ДАТА
-
-oracledb.DB_TYPE_DATE
-
-дата и время.дата и время
-
-ИНТЕРВАЛ ДЕНЬ-ВТОРОЙ
-
-oracledb.DB_TYPE_INTERVAL_DS
-
-datetime.timedelta
-
-ИНТЕРВАЛ ИЗ ГОДА В МЕСЯЦ
-
-oracledb.DB_TYPE_INTERVAL_YM
-
-oracledb.IntervalYM
-
-JSON
-
-oracledb.DB_TYPE_JSON
-
-dict, list или скалярное значение 4
-
-ДЛИННЫЙ
-
-oracledb.DB_TYPE_LONG
-
-ул.
-
-ДЛИННЫЙ СЫРОЙ
-
-oracledb.DB_TYPE_LONG_RAW
-
-байты
-
-НЧАР
-
-oracledb.DB_TYPE_NCHAR
-
-ул.
-
-НКЛОБ
-
-oracledb.DB_TYPE_NCLOB
-
-oracledb.LOB
-
-ЧИСЛО
-
-oracledb.DB_TYPE_NUMBER
-
-float или int 1
-
-NVARCHAR2
-
-oracledb.DB_TYPE_NVARCHAR
-
-ул.
-
-ОБЪЕКТ 3
-
-oracledb.DB_TYPE_OBJECT
-
-oracledb.Object
-
-СЫРОЙ
-
-oracledb.DB_TYPE_RAW
-
-байты
-
-ROWID
-
-oracledb.DB_TYPE_ROWID
-
-ул.
-
-МЕТКА ВРЕМЕНИ
-
-oracledb.DB_TYPE_TIMESTAMP
-
-дата и время.дата и время
-
-ВРЕМЕННАЯ МЕТКА С МЕСТНЫМ ЧАСОВЫМ ПОЯСОМ
-
-oracledb.DB_TYPE_TIMESTAMP_LTZ
-
-дата и время.дата и время 2
-
-ВРЕМЕННАЯ МЕТКА С ЧАСОВЫМ ПОЯСОМ
-
-oracledb.DB_TYPE_TIMESTAMP_TZ
-
-дата и время.дата и время 2
-
-УРОВИД
-
-oracledb.DB_TYPE_ROWID,oracledb.DB_TYPE_UROWID
-
-ул.
-
-VARCHAR2
-
-oracledb.DB_TYPE_VARCHAR
-
-ул.
-
-[ 1 ]
-Если точность и масштаб, полученные из метаданных столбца запроса, указывают на то, что значение может быть выражено целым числом, значение будет возвращено как int. Если столбец не ограничен (точность и масштаб не указаны), значение будет возвращено как float или int в зависимости от того, является ли само значение целым числом. Во всех остальных случаях значение возвращается как float.
-
-[ 2 ]
-( 1 , 2 )
-Возвращаемые временные метки являются примитивными временными метками, не содержащими никакой информации о часовом поясе.
-
-[ 3 ]
-К ним относятся все определяемые пользователем типы данных, такие как VARRAY, NESTED TABLE и т. д.
-
-[ 4 ]
-Если JSON — объект, возвращается словарь. Если это массив, возвращается список. Если это скалярное значение, возвращается это скалярное значение.
-
-6.1.5 Изменение извлеченных данных
-Данные, возвращаемые запросами python-oracledb, можно изменять с помощью обработчиков типов вывода, с помощью «выходных преобразователей» или с помощью фабрик строк.
+```
+
+#### 6.1.4. Выборка типов данных
+
+В следующей таблице представлен список всех типов данных, которые python-oracledb умеет извлекать. В среднем столбце указан тип, возвращаемый в метаданных запроса. В последнем столбце указан тип объекта Python, возвращаемый по умолчанию. Типы Python можно изменить с помощью обработчиков выходных типов.
+
+|Тип базы данных Oracle|Тип базы данных oracledb|Тип Python по умолчанию|
+|BFILE|oracledb.DB_TYPE_BFILE|oracledb.LOB|
+|BINARY_DOUBLE|oracledb.DB_TYPE_BINARY_DOUBLE|float|
+|BINARY_FLOAT|oracledb.DB_TYPE_BINARY_FLOAT|float|
+|BLOB|oracledb.DB_TYPE_BLOB|oracledb.LOB|
+|CHAR|oracledb.DB_TYPE_CHAR|str|
+|CLOB|oracledb.DB_TYPE_CLOB|oracledb.LOB|
+|CURSOR|oracledb.DB_TYPE_CURSOR|oracledb.Cursor|
+|DATE|oracledb.DB_TYPE_DATE|datetime.datetime|
+|INTERVAL DAY TO SECOND|oracledb.DB_TYPE_INTERVAL_DS|datetime.timedelta|
+|INTERVAL YEAR TO MONTH|oracledb.DB_TYPE_INTERVAL_YM|oracledb.IntervalYM|
+|JSON|oracledb.DB_TYPE_JSON|dict, list or a scalar value [4]|
+|LONG|oracledb.DB_TYPE_LONG|str|
+|LONG RAW|oracledb.DB_TYPE_LONG_RAW|bytes|
+|NCHAR|oracledb.DB_TYPE_NCHAR|str|
+|NCLOB|oracledb.DB_TYPE_NCLOB|oracledb.LOB|
+|NUMBER|oracledb.DB_TYPE_NUMBER|float or int [1]|
+|NVARCHAR2|oracledb.DB_TYPE_NVARCHAR|str|
+|OBJECT [3]|oracledb.DB_TYPE_OBJECT|oracledb.Object|
+|RAW|oracledb.DB_TYPE_RAW|bytes|
+|ROWID|oracledb.DB_TYPE_ROWID|str|
+|TIMESTAMP|oracledb.DB_TYPE_TIMESTAMP|datetime.datetime|
+|TIMESTAMP WITH LOCAL TIME ZONE|oracledb.DB_TYPE_TIMESTAMP_LTZ|datetime.datetime [2]|
+|TIMESTAMP WITH TIME ZONE|oracledb.DB_TYPE_TIMESTAMP_TZ|datetime.datetime [2]|
+|UROWID|oracledb.DB_TYPE_ROWID, oracledb.DB_TYPE_UROWID|str|
+|VARCHAR2|oracledb.DB_TYPE_VARCHAR|str|
+
+PS:
+1. Если точность и масштаб, полученные из метаданных столбца запроса, указывают на то, что значение может быть выражено целым числом, значение будет возвращено как int. Если столбец не ограничен (точность и масштаб не указаны), значение будет возвращено как float или int в зависимости от того, является ли само значение целым числом. Во всех остальных случаях значение возвращается как float.
+
+2. (1, 2) Возвращаемые временные метки являются примитивными временными метками, не содержащими никакой информации о часовом поясе.
+
+3. К ним относятся все определяемые пользователем типы данных, такие как VARRAY, NESTED TABLE и т. д.
+
+4. Если JSON — объект, возвращается словарь. Если это массив, возвращается список. Если это скалярное значение, возвращается это скалярное значение.
+
+# 6.1.5 Изменение извлеченных данных
+
+Данные, возвращаемые запросами python-oracledb, можно изменять с помощью обработчиков типов вывода, с помощью «выходных преобразователей» или с помощью фабрик строк. #!
 
 6.1.5.1 Изменение типов извлеченных данных с помощью обработчиков выходных типов
 Иногда преобразование по умолчанию из типа данных Oracle Database в тип данных Python необходимо изменить, чтобы предотвратить потерю данных или соответствовать целям приложения Python. В таких случаях для запросов можно указать обработчик выходных типов. Это предписывает базе данных выполнить преобразование из типа столбца в другой тип данных перед возвратом данных из базы данных в python-oracledb. Если база данных не поддерживает такое преобразование, будет возвращена ошибка. Обработчики выходных типов влияют только на выходные данные запроса и не влияют на значения, возвращаемые из Cursor.callfunc()или Cursor.callproc().
