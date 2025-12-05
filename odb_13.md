@@ -87,131 +87,35 @@ cursor.execute("insert into mytab (json_data) values (:1)", [oson])
 for (o,) in cursor.execute("select * from mytab"):
     d = connection.decode_oson(o)
     print(d)
-13.3 Сопоставление типов привязки IN
+## 13.3 Сопоставление типов привязки IN
+
 При привязке к значению JSON typeпараметр переменной должен быть указан как oracledb.DB_TYPE_JSON. Значения Python преобразуются в значения JSON, как показано в следующей таблице. Синтаксис «SQL Equivalent» можно использовать в операторах SQL INSERT и UPDATE, если требуются определённые типы атрибутов, но прямое сопоставление из Python отсутствует.
 
-Тип или значение Python
+|Тип или значение Python|Тип или значение атрибута JSON|Пример эквивалента SQL|
+|-|-|-|
+|None|null|NULL|
+|True|true|n/a|
+|False|false|n/a|
+|int|NUMBER|json_scalar(1)|
+|float|NUMBER|json_scalar(1)|
+|decimal.Decimal|NUMBER|json_scalar(1)|
+|str|VARCHAR2|json_scalar(‘String’)|
+|datetime.date|TIMESTAMP|json_scalar(to_timestamp(‘2020-03-10’, ‘YYYY-MM-DD’))|
+|datetime.datetime|TIMESTAMP|json_scalar(to_timestamp(‘2020-03-10’, ‘YYYY-MM-DD’))|
+|bytes|RAW|json_scalar(utl_raw.cast_to_raw(‘A raw value’))|
+|list|Array|json_array(1, 2, 3 returning json)|
+|dict|Object|json_object(key ‘Fred’ value json_scalar(5), key ‘George’ value json_scalar(‘A string’) returning json)|
+|n/a|CLOB|json_scalar(to_clob(‘A short CLOB’))|
+|n/a|BLOB|json_scalar(to_blob(utl_raw.cast_to_raw(‘A short BLOB’)))|
+|n/a|DATE|json_scalar(to_date(‘2020-03-10’, ‘YYYY-MM-DD’))|
+|oracledb.IntervalYM|INTERVAL YEAR TO MONTH|json_scalar(to_yminterval(‘+5-9’))|
+|datetime.timedelta|INTERVAL DAY TO SECOND|json_scalar(to_dsinterval(‘P25DT8H25M’))|
+|n/a|BINARY_DOUBLE|json_scalar(to_binary_double(25))|
+|n/a|BINARY_FLOAT|json_scalar(to_binary_float(15.5))|
 
-Тип или значение атрибута JSON
+Пример создания атрибута CLOB с ключом `mydocument` в столбце JSON с использованием SQL:
 
-Пример эквивалента SQL
-
-Никто
-
-нулевой
-
-НУЛЕВОЙ
-
-Истинный
-
-истинный
-
-н/д
-
-ЛОЖЬ
-
-ЛОЖЬ
-
-н/д
-
-инт
-
-ЧИСЛО
-
-json_scalar(1)
-
-плавать
-
-ЧИСЛО
-
-json_scalar(1)
-
-decimal.Decimal
-
-ЧИСЛО
-
-json_scalar(1)
-
-ул.
-
-VARCHAR2
-
-json_scalar('Строка')
-
-датавремя.дата
-
-МЕТКА ВРЕМЕНИ
-
-json_scalar(to_timestamp('2020-03-10', 'ГГГГ-ММ-ДД'))
-
-дата и время.дата и время
-
-МЕТКА ВРЕМЕНИ
-
-json_scalar(to_timestamp('2020-03-10', 'ГГГГ-ММ-ДД'))
-
-байты
-
-СЫРОЙ
-
-json_scalar(utl_raw.cast_to_raw('Необработанное значение'))
-
-список
-
-Множество
-
-json_array(1, 2, 3 возвращает json)
-
-дикт
-
-Объект
-
-json_object(ключ 'Фред' значение json_scalar(5), ключ 'Джордж' значение json_scalar('Строка') возвращающий json)
-
-н/д
-
-КЛОБ
-
-json_scalar(to_clob('Короткий CLOB'))
-
-н/д
-
-БЛОБ
-
-json_scalar(to_blob(utl_raw.cast_to_raw('Короткий BLOB')))
-
-н/д
-
-ДАТА
-
-json_scalar(to_date('2020-03-10', 'ГГГГ-ММ-ДД'))
-
-oracledb.IntervalYM
-
-ИНТЕРВАЛ ИЗ ГОДА В МЕСЯЦ
-
-json_scalar(to_yminterval('+5-9'))
-
-datetime.timedelta
-
-ИНТЕРВАЛ ДЕНЬ-ВТОРОЙ
-
-json_scalar(to_dsinterval('P25DT8H25M'))
-
-н/д
-
-BINARY_DOUBLE
-
-json_scalar(to_binary_double(25))
-
-н/д
-
-BINARY_FLOAT
-
-json_scalar(to_binary_float(15.5))
-
-Пример создания атрибута CLOB с ключом mydocumentв столбце JSON с использованием SQL:
-
+```
 cursor.execute("""
     insert into mytab (
         myjsoncol
@@ -219,81 +123,39 @@ cursor.execute("""
         json_object(key 'mydocument' value json_scalar(to_clob(:b)) returning json)
     )""",
     ['A short CLOB'])
+```
+
 При запросе к mytab в python-oracledb данные CLOB будут возвращены в виде строки Python, как показано в следующей таблице. Вывод может быть следующим:
 
+```
 {mydocument: 'A short CLOB'}
-13.4 Сопоставление типов запросов и исходящих привязок
+```
+
+## 13.4 Сопоставление типов запросов и исходящих привязок
+
 При получении значений JSON Oracle Database 21 из базы данных происходит следующее сопоставление атрибутов:
 
-Тип или значение атрибута JSON базы данных
+|Тип или значение атрибута JSON базы данных|Тип или значение Python|
+|-|-|
+|null|None|
+|false|False|
+|true|True|
+|NUMBER|decimal.Decimal|
+|VARCHAR2|str|
+|RAW|bytes|
+|CLOB|str|
+|BLOB|bytes|
+|DATE|datetime.datetime|
+|TIMESTAMP|datetime.datetime|
+|INTERVAL YEAR TO MONTH|oracledb.IntervalYM|
+|INTERVAL DAY TO SECOND|datetime.timedelta|
+|BINARY_DOUBLE|float|
+|BINARY_FLOAT|float|
+|Arrays|list|
+|Objects|dict|
 
-Тип или значение Python
+## 13.5 Выражения пути SQL/JSON
 
-нулевой
-
-Никто
-
-ЛОЖЬ
-
-ЛОЖЬ
-
-истинный
-
-Истинный
-
-ЧИСЛО
-
-decimal.Decimal
-
-VARCHAR2
-
-ул.
-
-СЫРОЙ
-
-байты
-
-КЛОБ
-
-ул.
-
-БЛОБ
-
-байты
-
-ДАТА
-
-дата и время.дата и время
-
-МЕТКА ВРЕМЕНИ
-
-дата и время.дата и время
-
-ИНТЕРВАЛ ИЗ ГОДА В МЕСЯЦ
-
-oracledb.IntervalYM
-
-ИНТЕРВАЛ ДЕНЬ-ВТОРОЙ
-
-datetime.timedelta
-
-BINARY_DOUBLE
-
-плавать
-
-BINARY_FLOAT
-
-плавать
-
-Массивы
-
-список
-
-Объекты
-
-дикт
-
-13.5 Выражения пути SQL/JSON
 Oracle Database предоставляет SQL-доступ к данным JSON с помощью выражений пути SQL/JSON. Выражение пути выбирает ноль или более значений JSON, соответствующих или удовлетворяющих условию. Выражения пути могут использовать подстановочные знаки и диапазоны массивов. Простое выражение пути — это $.friendsзначение поля JSON friends.
 
 Например, ранее созданную таблицу CUSTOMERS со столбцом JSON_DATA можно запросить следующим образом:
