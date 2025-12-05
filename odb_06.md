@@ -1,5 +1,3 @@
-# Under construction
-
 # 6. Выполнение SQL
 
 Выполнение операторов SQL — основной способ взаимодействия приложения Python с базой данных Oracle. Операторы включают запросы, язык манипулирования данными (DML) и язык определения данных (DDL). Также возможно выполнение некоторых других [специализированных операторов](https://www.oracle.com/pls/topic/lookup?ctx=dblatest&id=GUID-E1749EF5-2264-44DF-99EF-AEBEB943BED6). Операторы выполняются одним из следующих методов: `Cursor.execute()`, `Cursor.executemany()`, `Connection.fetch_df_all()`, `Connection.fetch_df_batches()`, `AsyncCursor.execute()`, `AsyncCursor.executemany()`, `AsyncConnection.execute()`, `AsyncConnection.executemany()`, `AsyncConnection.fetch_df_all()`, `AsyncConnection.fetch_df_batches()` или `AsyncConnection.run_pipeline()`.
