@@ -174,10 +174,11 @@ for size in array_sizes:
 
 ### 11.1.2. Настройка выборки из REF CURSORS
 
-Внутреннюю буферизацию и производительность выборки данных из REF CURSORS можно настроить, установив значение arraysizeдо выборки строк из курсора. При выборке из REF CURSORS это prefetchrowsзначение игнорируется .
+Внутреннюю буферизацию и производительность выборки данных из REF CURSORS можно настроить, установив значение `arraysize` до выборки строк из курсора. При выборке из REF CURSORS **значение** `prefetchrows` **игнорируется**.
 
 Например:
 
+```
 ref_cursor = connection.cursor()
 cursor.callproc("myrefcursorproc", [ref_cursor])
 
@@ -186,18 +187,24 @@ print("Sum of IntCol for", num_rows, "rows:")
 for row in ref_cursor:
     sum_rows += row[0]
 print(sum_rows)
-Значение Cursor.arraysize`также можно установить перед вызовом процедуры:
+```
 
+Значение `Cursor.arraysize` также можно установить перед вызовом процедуры:
+
+```
 ref_cursor = connection.cursor()
 ref_cursor.arraysize = 1000
 
 cursor.callproc("myrefcursorproc", [ref_cursor])
 for row in ref_cursor:
     . . .
-См. также раздел Как избежать преждевременной предварительной загрузки .
+```
 
-11.1.3. Настройка выборки для фреймов данных
-При извлечении кадров данных с помощью Connection.fetch_df_all()или Connection.fetch_df_batches()настройка передачи данных по сети контролируется соответствующими методами arraysizeили sizeпараметрами.
+См. также [раздел Как избежать преждевременной предварительной загрузки](odb_11.md#11_1_1_3).
+
+### 11.1.3. Настройка выборки для фреймов данных
+
+При извлечении фреймов данных с помощью `Connection.fetch_df_all()` или `Connection.fetch_df_batches()` настройка передачи данных по сети производится соответствующими параметрами этих методов `arraysize` или `size`.
 
 Любое oracledb.defaults.prefetchrowsзначение игнорируется, поскольку эти методы всегда устанавливают внутренний размер предварительной выборки на соответствующее arraysizeзначение size.
 
