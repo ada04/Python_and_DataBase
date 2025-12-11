@@ -1,5 +1,3 @@
-# under construction
-
 # 11. Настройка python-oracledb
 
 Вот несколько общих советов по настройке:
